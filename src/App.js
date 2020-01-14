@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import  './App.css';
+import './App.css';
 import Radium, {StyleRoot} from 'radium';
 import Person from './Person/Person';
-
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 
 class App extends Component {
     state = {
@@ -57,31 +57,31 @@ class App extends Component {
     }
 
     render() {
-         const style = {
-             backgroundColor: 'green',
-                  color: 'white',
-          font: 'inherit',
-             border: '1px solid blue',
-             padding: '8px',
-             cursor: 'pointer',
-             ':hover': {
-             backgroundColor: 'lightgreen',
-             color: 'black'
-         }
-         };
+        const style = {
+            backgroundColor: 'green',
+            color: 'white',
+            font: 'inherit',
+            border: '1px solid blue',
+            padding: '8px',
+            cursor: 'pointer',
+            ':hover': {
+                backgroundColor: 'lightgreen',
+                color: 'black'
+            }
+        };
         let persons = null;
         if (this.state.showPersons) {
 
             persons = (
                 <div>
                     {this.state.persons.map((person, index) => {
-                        return <Person
+                        return <ErrorBoundary><Person
                             key={person.id}
                             name={person.name} age={person.age}
                             changed={(event) => {
                                 this.nameChangesHandler(event, person.id)
                             }}
-                            click={() => this.deletePersonHandler(index)}/>
+                            click={() => this.deletePersonHandler(index)}/></ErrorBoundary>
                     })}
                     {/*<Person name={this.state.persons[1].name} age={this.state.persons[1].age}*/}
                     {/*changed={this.nameChangesHandler}*/}
@@ -91,22 +91,23 @@ class App extends Component {
                 </div>
             );
             style.backgroundColor = 'red';
-             style[':hover'] = {
+            style[':hover'] = {
                 backgroundColor: 'salmon',
-                 color: 'black'
-             }
+                color: 'black'
+            }
         }
         //let classes =['red','bold'].join(' ');
         const classes = [];
         if (this.state.persons.length <= 2) {
-            classes.push(classes.red);
+            classes.push('red');
         }
         if (this.state.persons.length <= 1) {
             classes.push('bold');
-        } 
+        }
+
         return (
             <StyleRoot>
-                <div className={classes.App}>
+                <div className="App">
                     <h1>Hi, Im a React App </h1>
                     <p className={classes.join('  ')}>this is realllyy working!</p>
                     {/*<button onClick={this.switchNameHandler.bind(this, 'Maximillian')}>Switch Name</button>*/}
